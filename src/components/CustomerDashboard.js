@@ -129,7 +129,6 @@ const showPendingBets = (props) => {
 const completePendingBetAction = (props, bet) => {
   const {
     account,
-    token,
     exchange,
     dispatch
   } = props
@@ -316,20 +315,20 @@ const tokenWithdrawField = (props) => {
 }
 
 class CustomerDashboard extends Component {
-  componentWillMount() {
-    this.loadBlockchainData(this.props)
-  }
+  // componentWillMount() {
+  //   this.loadBlockchainData(this.props)
+  // }
 
-  async loadBlockchainData(props) {
-    const {
-      account,
-      token,
-      exchange,
-      dispatch
-    } = props
+  // async loadBlockchainData(props) {
+  //   const {
+  //     account,
+  //     token,
+  //     exchange,
+  //     dispatch
+  //   } = props
 
-    await loadBalances(account, token, exchange, dispatch)
-  }
+  //   await loadBalances(account, token, exchange, dispatch)
+  // }
 
   render() {
     return (
@@ -402,6 +401,7 @@ class CustomerDashboard extends Component {
 
 function mapStateToProps(state) {
   const allBetTypesLoaded = allBetTypesLoadedSelector(state)
+  
   return {
     showAll: allBetTypesLoaded,
     account: accountSelector(state),

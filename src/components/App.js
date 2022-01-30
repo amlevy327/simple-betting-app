@@ -9,7 +9,8 @@ import {
   loadTokenContract,
   loadExchangeContract,
   loadExchangeEvents,
-  subscribeToEvents
+  subscribeToEvents,
+  loadBalances
 } from '../store/interactions'
 import {
   accountLoadedSelector,
@@ -32,7 +33,7 @@ class App extends Component {
     const web3 = await loadWeb3(dispatch)
     const networkId = await web3.eth.net.getId()
     
-    await loadAccount(web3, dispatch)
+    let account = await loadAccount(web3, dispatch)
 
     const token = await loadTokenContract(web3, networkId, dispatch)
     if (!token) {
@@ -46,6 +47,7 @@ class App extends Component {
 
     await loadExchangeEvents(exchange, dispatch)
     await subscribeToEvents(exchange, dispatch)
+    await loadBalances(account, token, exchange, dispatch)
   }
 
   render() {
@@ -53,19 +55,19 @@ class App extends Component {
       <div>
         <Navbar />
         { this.props.showDashboard ? <CustomerDashboard /> : <Spinner /> }
+        {/* <CustomerDashboard /> */}
       </div>
     )
   }
 }
 
 function mapStateToProps(state) {
-  const accountLoaded = accountLoadedSelector(state)
   const contractsLoaded = contractsLoadedSelector(state)
   const balancesLoaded = balancesLoadedSelector(state)
   
   return {
     accountLoaded: accountLoadedSelector(state),
-    showDashboard: accountLoaded && contractsLoaded && balancesLoaded
+    showDashboard: contractsLoaded && balancesLoaded
   }
 }
 

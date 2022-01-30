@@ -161,6 +161,9 @@ export const loadBalances = async (account, token, exchange, dispatch) => {
     const exchangeTokenBalance = await exchange.methods.balanceOf(token.options.address, account).call()
     dispatch(exchangeTokenBalanceLoaded(exchangeTokenBalance))
 
+    console.log('AML tokenBalance: ', tokenBalance)
+    console.log('AML exchangeTokenBalance: ', exchangeTokenBalance)
+
     // all balances loaded
     dispatch(balancesLoaded())
 
@@ -239,17 +242,39 @@ export const submitWinner = (account, exchange, bet, winner, dispatch) => {
 
 // deposit token - TODO: check approving methods
 
-export const depositToken = (web3, account, token, exchange, amount, dispatch) => {
+export const depositToken = async (web3, account, token, exchange, amount, dispatch) => {
   //amount = web3.utils.toWei(amount, 'ether')
+
+  // token.methods.approve(exchange.options.address, amount).send({ from: account })
+  // .on('transactionHash', (hash) => {
+  //   exchange.methods.depositToken(token.options.address, amount).send({ from: account })
+  //   .on('transactionHash', (hash) => {
+  //     dispatch(balancesLoading())
+  //   })
+  //   .on('error',(error) => {
+  //     console.error(error)
+  //     window.alert(`There was an error!`)
+  //   })
+  // })
+
+  await token.methods.approve(exchange.options.address, amount).send({ from: account })
+  await exchange.methods.depositToken(token.options.address, amount).send({ from: account })
+  .on('transactionHash', (hash) => {
+    dispatch(balancesLoading())
+  })
+  .on('error',(error) => {
+    console.error(error)
+    window.alert(`There was an error!`)
+  })
   
-  exchange.methods.depositToken(token.options.address, amount).send({ from: account })
-    .on('transactionHash', (hash) => {
-      dispatch(balancesLoading())
-    })
-    .on('error',(error) => {
-      console.error(error)
-      window.alert(`There was an error!`)
-    })
+  // exchange.methods.depositToken(token.options.address, amount).send({ from: account })
+  //   .on('transactionHash', (hash) => {
+  //     dispatch(balancesLoading())
+  //   })
+  //   .on('error',(error) => {
+  //     console.error(error)
+  //     window.alert(`There was an error!`)
+  //   })
 }
 
 // withdraw token

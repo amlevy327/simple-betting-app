@@ -95,6 +95,9 @@ module.exports = async function(callback) {
     //result = await exchange.bets('1')
     //console.log("bet 1:", result)
 
+    let balance = await token.balanceOf(user1)
+    console.log("balance user1:", balance)
+
     await exchange.acceptBet('1', { from: user2 })
     console.log('Bet 1 accepted by user2')
 

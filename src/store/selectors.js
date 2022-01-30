@@ -1,4 +1,4 @@
-import { get, groupBy, reject, maxBy, minBy } from 'lodash'
+import { get, reject } from 'lodash'
 import { createSelector } from 'reselect'
 
 const ADDRESS_0x0 = '0x0000000000000000000000000000000000000000'
@@ -217,7 +217,7 @@ const addSubmittedWinner = (bet, account, winnerSubmitted) => {
     winnerSubmitted = winnerSubmitted.filter((w) => w.id === bet.id)
 
     for (let i = 0; i < winnerSubmitted.length; i++) {
-        if ((winnerSubmitted[i].maker === account && winnerSubmitted[i].winnerMaker != ADDRESS_0x0) || (winnerSubmitted[i].taker === account && winnerSubmitted[i].winnerTaker != ADDRESS_0x0)) {
+        if ((winnerSubmitted[i].maker === account && winnerSubmitted[i].winnerMaker !== ADDRESS_0x0) || (winnerSubmitted[i].taker === account && winnerSubmitted[i].winnerTaker !== ADDRESS_0x0)) {
             submittedWinner = true
         }
     }
@@ -237,10 +237,10 @@ const addUpdatedMakerTakerWinners = (bet, winnerSubmitted) => {
     winnerSubmitted = winnerSubmitted.filter((w) => w.id === bet.id)
 
     for (let i = 0; i < winnerSubmitted.length; i++) {
-        if (winnerSubmitted[i].winnerMaker != ADDRESS_0x0) {
+        if (winnerSubmitted[i].winnerMaker !== ADDRESS_0x0) {
             updatedWinnerMaker = winnerSubmitted[i].winnerMaker
         }
-        if (winnerSubmitted[i].winnerTaker != ADDRESS_0x0) {
+        if (winnerSubmitted[i].winnerTaker !== ADDRESS_0x0) {
             updatedWinnerTaker = winnerSubmitted[i].winnerTaker
         }
     }
